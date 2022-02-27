@@ -1,10 +1,11 @@
 import Router from 'next/router'
 import { useState } from 'react'
-import { api } from '../helpers/api'
+import { api } from '../services/api'
 
 export const useRegister = () => {
   const [state, setState] = useState({
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -30,19 +31,17 @@ export const useRegister = () => {
     })
 
     try {
-      const { name, email, password, confirmPassword } = state
+      const { firstname, lastname, email, password, confirmPassword } = state
       if (password !== confirmPassword) {
         throw new Error('Passwords do not match')
       }
-      if (!name || !email || !password || !confirmPassword) {
+      if (!firstname || !lastname || !email || !password || !confirmPassword) {
         throw new Error('All fields are required')
       }
       console.log(state)
-      const resp = await api.register({ name, email, password })
-      const { ok } = resp
-      const { message } = await resp.json()
-      if (!ok) {
-        throw new Error(`${message}`)
+      const resp = await api.postUsers({ firstname, lastname, email, password })
+      if (resp.statusText !== 'OK') {
+        throw new Error(`${resp.data.message}`)
       }
       Router.push('/')
     } catch (error) {
