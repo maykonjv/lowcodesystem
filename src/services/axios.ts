@@ -1,5 +1,5 @@
-import axios from "axios";
-import { parseCookies } from "nookies";
+import axios from 'axios'
+import { parseCookies } from 'nookies'
 
 export function getAPIClient(ctx?: any) {
   const { 'nextauth.token': token } = parseCookies(ctx)
@@ -8,15 +8,12 @@ export function getAPIClient(ctx?: any) {
     baseURL: 'http://localhost:3000'
   })
 
-  api.interceptors.request.use(config => {
-    // console.log(config);
-
-    return config;
+  api.interceptors.request.use((config: any) => {
+    console.log(`axios.ts getAPIClient: ${config}`)
+    return config
   })
-
   if (token) {
-    api.defaults.headers['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers['Authorization'] = `Bearer ${token}`
   }
-
-  return api;
+  return api
 }

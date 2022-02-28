@@ -28,7 +28,7 @@ export default async function handler(
   switch (method) {
     case 'GET':
       // Get data from your database
-      if (!authorization || (await verifyToken(authorization))) {
+      if (!authorization || (!await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
         const menu = get(id as string)
@@ -40,7 +40,7 @@ export default async function handler(
       break
     case 'PUT':
       // Update or create data in your database
-      if (!authorization || (await verifyToken(authorization))) {
+      if (!authorization || (!await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
         const menu = update(body as MenuType)
@@ -57,7 +57,7 @@ export default async function handler(
       break
     case 'DELETE':
       // Delete data in your database
-      if (!authorization || (await verifyToken(authorization))) {
+      if (!authorization || (!await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
         const menu = remove(id as string)

@@ -32,5 +32,13 @@ export async function generateToken(id: string): Promise<string> {
 
 // verify jwt token
 export async function verifyToken(token: string): Promise<boolean> {
-  return await jwt.verify(token, process.env.JWT_SECRET || 'secret')
+  try{
+    token = token.replace('Bearer ', '')
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET || 'secret')
+    console.log('decoded', decoded)
+    return true
+  } catch(e: any) {
+    console.log(`verifyToken error: ${e.name}: ${e.message}`)
+    return false
+  }
 }
