@@ -35,7 +35,7 @@ import {
 import { IconType } from 'react-icons'
 import Router from 'next/router'
 import { Sidepanel } from './dev/Sidepanel.dev'
-import Footer from './footer'
+import Footer from './Footer'
 
 interface LinkItemProps {
   name: string
