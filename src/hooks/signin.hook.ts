@@ -1,20 +1,18 @@
-import Router from 'next/router'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { AuthContext } from '../contexts/AuthContext'
 import { api } from '../services/api'
 
-export const useRegister = () => {
+export const useLogin = () => {
+  const { signIn } = useContext(AuthContext)
   const [state, setState] = useState({
-    firstname: '',
-    lastname: '',
     email: '',
     password: '',
-    confirmPassword: '',
     error: null,
     loading: false,
     success: false
   })
 
-  const handleChange = event => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setState({
       ...state,
@@ -22,7 +20,7 @@ export const useRegister = () => {
     })
   }
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
     setState({
       ...state,
@@ -31,20 +29,17 @@ export const useRegister = () => {
     })
 
     try {
-      const { firstname, lastname, email, password, confirmPassword } = state
-      if (password !== confirmPassword) {
-        throw new Error('Passwords do not match')
-      }
-      if (!firstname || !lastname || !email || !password || !confirmPassword) {
+      const { email, password } = state
+      if (!email || !password) {
         throw new Error('All fields are required')
       }
-      console.log(state)
-      const resp = await api.postUsers({ firstname, lastname, email, password })
+      const resp = await api.login({ email, password })
       if (resp.statusText !== 'OK') {
         throw new Error(`${resp.data.message}`)
       }
-      Router.push('/')
-    } catch (error) {
+      signIn({ token: resp.data.token, user: resp.data.user })
+    } catch (error: any) {
+      console.log(error)
       setState({
         ...state,
         error: error.message,

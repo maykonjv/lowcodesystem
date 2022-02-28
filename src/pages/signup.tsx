@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useRegister } from "../hooks/register";
+import { useRegister } from "../hooks/signup.hook";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,19 +49,19 @@ export default function Signup() {
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
-                  <Input type="text" name="firstname" onChange={handleChange} />
+                  <Input type="text" name="firstname" value={state.firstname} onChange={handleChange} />
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="lastName">
                   <FormLabel>Last Name</FormLabel>
-                  <Input type="text" name="lastname" onChange={handleChange} />
+                  <Input type="text" name="lastname" value={state.lastname} onChange={handleChange} />
                 </FormControl>
               </Box>
             </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" name="email" onChange={handleChange} />
+              <Input type="email" name="email" value={state.email} onChange={handleChange} />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
@@ -69,6 +69,7 @@ export default function Signup() {
                 <Input
                   type={showPassword ? "text" : "password"}
                   name="password"
+                  value={state.password}
                   onChange={handleChange}
                 />
                 <InputRightElement h={"full"}>
@@ -83,6 +84,32 @@ export default function Signup() {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
+            <FormControl id="confirmPassword" isRequired>
+              <FormLabel>Confirm Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={state.confirmPassword}
+                  onChange={handleChange}
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            {state.success &&
+              <Text color="green.500">
+                Success! You can now log in.
+              </Text>}
+
             {state.error && <Text color={"red.500"}>{state.error}</Text>}
             <Stack spacing={10} pt={2}>
               <Button

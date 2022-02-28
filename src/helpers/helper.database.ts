@@ -5,7 +5,7 @@ interface ConnectType {
   client: MongoClient
 }
 
-const client = new MongoClient(process.env.DATABASE_URL)
+const client = new MongoClient(process.env.DATABASE_URL || 'mongodb://localhost:27017')
 
 const connect = async (): Promise<ConnectType> => {
   try {
@@ -16,6 +16,7 @@ const connect = async (): Promise<ConnectType> => {
     return { db, client }
   } catch (error) {
     console.error(error)
+    throw error;
   }
 }
 

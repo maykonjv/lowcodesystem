@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
 import initMiddleware from '../../helpers/init-middleware'
-import { UserType } from '../../services/api'
+import { MenuType } from '../../services/api'
 import connect from '../../helpers/helper.database'
 import { hash, verifyToken } from '../../helpers/helper.crypto'
 
@@ -31,11 +31,11 @@ export default async function handler(
       if (!authorization || (await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
-        const user = get(id as string)
-        res.status(200).json(user)
+        const menu = get(id as string)
+        res.status(200).json(menu)
       } else {
-        const users = getAll()
-        res.status(200).json(users)
+        const menus = getAll()
+        res.status(200).json(menus)
       }
       break
     case 'PUT':
@@ -43,25 +43,25 @@ export default async function handler(
       if (!authorization || (await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
-        const user = update(body as UserType)
-        res.status(200).json(user)
+        const menu = update(body as MenuType)
+        res.status(200).json(menu)
       } else {
-        const user = create(body as UserType)
-        res.status(200).json(user)
+        const menu = create(body as MenuType)
+        res.status(200).json(menu)
       }
       break
     case 'POST':
       // Create data in your database
-      const user = create(body as UserType)
-      res.status(200).json(user)
+      const menu = create(body as MenuType)
+      res.status(200).json(menu)
       break
     case 'DELETE':
       // Delete data in your database
       if (!authorization || (await verifyToken(authorization))) {
         res.status(401).json({ error: 'Unauthorized' })
       } else if (id) {
-        const user = remove(id as string)
-        res.status(200).json(user)
+        const menu = remove(id as string)
+        res.status(200).json(menu)
       } else {
         res.status(400).json({ message: 'Please provide an id' })
       }
@@ -72,14 +72,12 @@ export default async function handler(
   }
 }
 
-// create user in your database
-const create = async (user: UserType) => {
+// create menu in your database
+const create = async (menu: MenuType) => {
   try {
     const { db } = await connect()
-    user.created_at = new Date()
-    const hashPass = await hash(user.password)
-    user.password = hashPass
-    const respDB = await db.collection('users').insertOne(user as any)
+    menu.created_at = new Date()
+    const respDB = await db.collection('menus').insertOne(menu as any)
     return respDB.insertedId
   } catch (e) {
     console.log(e)
@@ -87,15 +85,14 @@ const create = async (user: UserType) => {
   }
 }
 
-// update user in your database
-const update = async (user: UserType) => {
+// update menu in your database
+const update = async (menu: MenuType) => {
   try {
     const { db } = await connect()
-    user.updated_at = new Date()
-    await hash(user.password)
+    menu.updated_at = new Date()
     const respDB = await db
-      .collection('users')
-      .updateOne({ _id: user._id }, { $set: user })
+      .collection('menus')
+      .updateOne({ _id: menu._id }, { $set: menu })
     return respDB.modifiedCount
   } catch (e) {
     console.log(e)
@@ -103,27 +100,25 @@ const update = async (user: UserType) => {
   }
 }
 
-// delete user in your database
+// delete menu in your database
 const remove = async (id: string) => {
   try {
     const { db } = await connect()
 
-    const respDB = await db
-      .collection('users')
-      .findOneAndUpdate({ _id: id }, { deleted_at: new Date() })
-    return respDB.ok
+    const respDB = await db.collection('menus').deleteOne({ _id: id })
+    return respDB.deletedCount
   } catch (e) {
     console.log(e)
     return null
   }
 }
 
-// get user from your database
+// get menu from your database
 const get = async (id: string) => {
   try {
     const { db } = await connect()
 
-    const respDB = await db.collection('users').findOne({ _id: id }, {
+    const respDB = await db.collection('menus').findOne({ _id: id }, {
       projection: {
         password: 0
       }
@@ -135,15 +130,12 @@ const get = async (id: string) => {
   }
 }
 
-// get all users from your database
+// get all menus from your database
 const getAll = async () => {
   try {
     const { db } = await connect()
 
-    const respDB = await db
-      .collection('users')
-      .find({ deleted_at: null }, { projection: { password: 0 } })
-      .toArray()
+    const respDB = await db.collection('menus').find({}).toArray()
     return respDB
   } catch (e) {
     console.log(e)
