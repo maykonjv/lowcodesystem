@@ -1,10 +1,10 @@
-import {Box, Button, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, Input, Select, Wrap, WrapItem} from '@chakra-ui/react';
-import {ChangeEvent, ReactEventHandler, useContext, useState} from 'react';
-import {DashboardContext} from '../../contexts/Dashboard.context';
+import { Box, Button, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, Input, Select, Wrap, WrapItem } from '@chakra-ui/react';
+import { ChangeEvent, ReactEventHandler, useContext, useState } from 'react';
+import { DashboardContext } from '../../contexts/Dashboard.context';
 
-export const MainContent = ({onOpen, onClose, title}: {onOpen: () => void; onClose: () => void; title: string}) => {
-  const {page, setPage} = useContext(DashboardContext);
-  const [form, setForm] = useState({id: ''});
+export const MainContent = ({ onOpen, onClose, title }: { onOpen: () => void; onClose: () => void; title: string }) => {
+  const { page, setPage } = useContext(DashboardContext);
+  const [form, setForm] = useState({ id: '' });
 
   const Add = (
     <Button
@@ -48,14 +48,14 @@ export const MainContent = ({onOpen, onClose, title}: {onOpen: () => void; onClo
 
       <DrawerBody>
         {Add}
-        <Select mb={2} placeholder="TYPE here..." h={'8'} onSelect={(e: string) => setForm({id: e})}>
+        <Select mb={2} placeholder="TYPE" h={'8'} onSelect={(e: any) => setForm({ id: e })}>
           <option value="1">Input</option>
           <option value="2">Area</option>
           <option value="3">Select</option>
         </Select>
-        <Input mb={2} placeholder="ID here..." h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({id: e.target.value})} />
-        <Input mb={2} placeholder="NAME here..." h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({id: e.target.value})} />
-        <Input mb={2} placeholder="LABEL here..." h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({id: e.target.value})} />
+        <Input mb={2} placeholder="ID" h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ id: e.target.value })} />
+        <Input mb={2} placeholder="NAME" h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ id: e.target.value })} />
+        <Input mb={2} placeholder="LABEL" h={'8'} onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ id: e.target.value })} />
       </DrawerBody>
 
       <DrawerFooter>

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button, Drawer, DrawerOverlay, useDisclosure} from '@chakra-ui/react';
-import {FiSettings} from 'react-icons/fi';
-import {MainContent} from './main.dev';
+import { Button, Drawer, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
+import { FiSettings } from 'react-icons/fi';
+import { MainContent } from './main.dev';
 
 export function Sidepanel() {
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  const btnRef = React.useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef<any>();
 
   return (
     <>
