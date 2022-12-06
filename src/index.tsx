@@ -1,10 +1,12 @@
+import { ServicesSchema } from './config/schema/schema';
+import reportWebVitals from './reportWebVitals';
+import { App } from './routes/routes';
+import { addApi } from './service/api';
+import * as serviceWorker from './serviceWorker';
 import { ColorModeScript, extendTheme, ChakraProvider } from '@chakra-ui/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { App } from './routes/routes';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorker from './serviceWorker';
 
 const colors = {
   brand: {
@@ -20,6 +22,11 @@ const container = document.getElementById('root');
 if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container);
 
+ServicesSchema.map((service) => {
+  const { name, url } = service;
+  addApi(name, url);
+});
+
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
@@ -28,7 +35,7 @@ root.render(
         <App />
       </BrowserRouter>
     </ChakraProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change
