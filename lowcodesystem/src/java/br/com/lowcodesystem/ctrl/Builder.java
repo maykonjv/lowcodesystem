@@ -18,17 +18,17 @@ import br.com.lowcodesystem.util.ProjectLoad;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -534,9 +534,10 @@ public class Builder extends HttpServlet {
                     if (!pathSchema.endsWith("/") && !pathSchema.endsWith("\\")) {
                         pathSchema += File.separator;
                     }
+//                    pathSchema += projectID + File.separator;
                     ProjectLoad.properties.clear();
-                    ManterXML.writePathXML(pathSchema, projectID);
-                    ProjectLoad.load(projectID);
+                    ManterXML.writePathXML(pathSchema, warName);
+                    ProjectLoad.load(warName);
                     Render.project.setPathUploadFiles(pathSchema + "upload");
                     Render.project.setLoginExterno(request.getParameter("loginExterno") != null);
                     Render.project.setUrlLogin(request.getParameter("urlLogin"));

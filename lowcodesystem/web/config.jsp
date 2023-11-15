@@ -23,7 +23,7 @@
         <base href="./">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title><%=request.getAttribute("projectName")%></title>
+        <title>LowcodeSystem</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="CMS auto gerenciavel.">
         <meta name="author" content="Maykon Vaz">

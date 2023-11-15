@@ -57,7 +57,7 @@ public class Scheduler {
                         }
                     }
                 });
-                t.setName("@@->THREAD TEMPLATE - rotinas agendadas");
+                t.setName("@@->THREAD LowcodeSystem - rotinas agendadas");
                 t.start();
             }
 

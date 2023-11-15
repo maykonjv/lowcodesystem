@@ -24,7 +24,7 @@
         <base href="./">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title><%=request.getAttribute("projectName")%></title>
+        <title>LowcodeSystem</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="CMS auto gerenciavel.">
         <meta name="author" content="Maykon Vaz">
@@ -64,9 +64,9 @@
                                 <div class="card-body p-4">
                                     <h1>Configurações do Projeto</h1>
                                     <% if (request.getAttribute("msg1") != null) {%>
-                                    <div class="alert alert-success">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         <%=request.getAttribute("msg1")%>
+                                        <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                     <%}%>
                                     <br/>
@@ -83,7 +83,7 @@
                                         <label for="pathSchema" class="form-label">Pasta dos projetos</label>
                                         <input type="text" class="form-control" id="pathSchema" name="pathSchema" placeholder="/home/lowcodesystem/" value="<%=FormataTexto.toString(ManterXML.pasta)%>">
                                     </div>
-                                     
+
                                     <div class="row">
                                         <div class="col-6">
                                             <button class="btn btn-block btn-light" type="button" onclick="history.go(-1)">Cancel</button>

@@ -24,7 +24,6 @@ import br.com.lowcodesystem.model.Project;
 import static br.com.lowcodesystem.util.ManterXML.pasta;
 import br.com.lowcodesystem.ctrl.Scheduler;
 import static br.com.lowcodesystem.ctrl.Scheduler.listThreadNames;
-import jakarta.servlet.ServletContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -78,7 +78,7 @@ public class ProjectLoad {
             }
             if (project == null) {
                 project = new Project();
-                project.setProjectName("Template");
+                project.setProjectName("LowcodeSystem");
             }
             if (project.getVersion() == null || project.getVersion().isEmpty()) {
                 project.setVersion("1.0.0");
@@ -170,7 +170,7 @@ public class ProjectLoad {
                         }
                     }
                 });
-                t.setName("@@->THREAD TEMPLATE - limpar temp (0:00)");
+                t.setName("@@->THREAD LowcodeSystem - limpar temp (0:00)");
                 listThreadNames.add(t.getName());
                 t.start();
             }
