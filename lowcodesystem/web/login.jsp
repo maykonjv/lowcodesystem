@@ -1,3 +1,4 @@
+<%@page import="br.com.lowcodesystem.ctrl.Render"%>
 <%@page import="java.util.Date"%>
 <%@page import="br.com.lowcodesystem.ctrl.Upload"%>
 <!DOCTYPE html><!--
@@ -36,17 +37,20 @@
         <!-- Vendors styles-->
         <link rel="stylesheet" href="libs/vendors/simplebar/css/simplebar.css">
         <link rel="stylesheet" href="libs/css/vendors/simplebar.css">
+        <link href="libs/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <!-- Main styles for this application-->
         <link href="libs/css/style.css" rel="stylesheet">
-        <!-- We use those styles to show code examples, you should remove them in your application.-->
-        <link href="libs/css/examples.css" rel="stylesheet">
+        <link href="libs/css/lowcodesystem.css" rel="stylesheet">
+        <script src="libs/js/jquery.min.js"></script>
         <style>
             <%=Render.project.getCssGeral()%>
-        </style>
+        </style>    
     </head>
     <body>
         <%if (session.getAttribute("dev") != null && (Boolean) session.getAttribute("dev")) {%>
-        <a href="config.jsp" class="btn btn-primary" style="margin:10px; width: 150px;"><i class="glyphicon glyphicon-cog" style="margin-right: 5px;"></i>Configuração</a>
+        <div class="header-nav d-none d-md-flex my-3">
+            <%@include file="components/header_config_geral.jsp" %>
+        </div>
         <%}%>
         <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
             <div class="container">
@@ -57,8 +61,8 @@
                                 <div class="card-body">
                                     <% Object error = request.getAttribute("error");
                                         if (error != null && !error.toString().isEmpty()) {
-                                            out.println("<div class=\"alert alert-danger\">");
-                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>");
+                                            out.println("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">");
+                                            out.println("<button type=\"button\" class=\"btn-close\" data-coreui-dismiss=\"alert\" aria-label=\"Close\"></button>");
                                             out.println(error);
                                             out.println("</div>");
                                         }
@@ -68,15 +72,11 @@
                                         <h1>Login</h1>
                                         <p class="text-medium-emphasis">Inicie sessão na sua conta</p>
                                         <div class="input-group mb-3"><span class="input-group-text">
-                                                <svg class="icon">
-                                                <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                                                </svg></span>
+                                               <i class="fa fa-user"></i></span>
                                             <input name="username" class="form-control" type="text" placeholder="Username">
                                         </div>
                                         <div class="input-group mb-4"><span class="input-group-text">
-                                                <svg class="icon">
-                                                <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
-                                                </svg></span>
+                                               <i class="fa fa-lock"></i></span>
                                             <input name="password" id="password" class="form-control" type="password" placeholder="Password">
                                         </div>
                                         <div class="row">
@@ -102,16 +102,22 @@
                                 </form>
                             </div>
                         </div>
+                        <footer class="footer">
+                            <div> © <a href="template.jsp"><%=request.getAttribute("projectName")%></a> <%=request.getAttribute("projectYear")%> - <%=request.getAttribute("projectVersion")%></div>
+                            <div class="ms-auto">Powered by&nbsp;<a href="config.jsp">LowcodeSystem</a></div>
+                        </footer>
                     </div>
                 </div>
             </div>
         </div>
-        <%@include file="modal_login.jsp" %>
         <!-- CoreUI and necessary plugins-->
         <script src="libs/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
         <script src="libs/vendors/simplebar/js/simplebar.min.js"></script>
-        <script>
-        </script>
 
+        <script>
+            <%=Render.project.getJsGeral()%>
+        </script>         
+        <%@include file="components/footer_config.jsp" %>
+        <script src="libs/js/lowcodesystem.js"></script>
     </body>
 </html>

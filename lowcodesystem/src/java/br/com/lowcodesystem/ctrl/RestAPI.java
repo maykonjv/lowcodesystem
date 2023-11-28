@@ -468,7 +468,7 @@ public class RestAPI extends HttpServlet {
     private String doc2(Profile profile, String url, String hash, String page) {
         StringBuilder docs = new StringBuilder();
         docs.append("<br>Nome do projeto: ").append(Render.project.getProjectName());
-        docs.append("<br>Versão do projeto: ").append(Render.project.getVersion());
+        docs.append("<br>Versão do projeto: ").append(Render.project.getProjectVersion());
         docs.append("<br>Data atual: ").append(new Date().toLocaleString());
         docs.append("<br><br>");
         if (page == null) {

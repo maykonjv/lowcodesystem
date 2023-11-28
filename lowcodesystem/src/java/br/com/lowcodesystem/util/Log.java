@@ -35,6 +35,7 @@ public class Log {
     public static SimpleDateFormat sdfHoje = new SimpleDateFormat("yyyy-MM-dd");
     public static Map<String, Boolean> levels = new HashMap<String, Boolean>();
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmm");
+    public static boolean logLOCAL = false;
 
     public static void config(String path, String logName, long size) {
         Log.path = path;
@@ -150,9 +151,15 @@ public class Log {
                 }
                 if (msg != null && !msg.isEmpty()) {
                     pw.write("\n" + level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | " + msg + "");
+                    if (logLOCAL) {
+                        System.out.println(level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | " + msg + "");
+                    }
                 }
                 if (ex != null) {
                     pw.write("\n" + level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId());
+                    if (logLOCAL) {
+                        System.out.println(level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId());
+                    }
                     ex.printStackTrace(pw);
                 }
                 pw.close();

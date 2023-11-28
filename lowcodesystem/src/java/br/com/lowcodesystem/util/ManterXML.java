@@ -23,6 +23,7 @@ import org.dom4j.io.XMLWriter;
 public class ManterXML {
 
     public static String pasta;
+    public static String pastaRaiz;
     public static String SistemaOperacional = System.getProperty("os.name");
 
     public static String path(String fileName) throws FileNotFoundException {
@@ -52,6 +53,15 @@ public class ManterXML {
         XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
         encoder.writeObject(path);
         encoder.close();
+        
+        File dirProject = new File(pasta);
+        if(!dirProject.exists()){
+            dirProject.mkdirs();
+            new File(pasta + "_log").mkdir();
+            new File(pasta + "schema").mkdir();
+            new File(pasta + "upload").mkdir();
+            System.out.println("Schema created!");
+        }
     }
 
     public static void writeXML(String session, Object classe) throws FileNotFoundException, IOException {
@@ -62,7 +72,8 @@ public class ManterXML {
 
     public static Object readXML(String session, String fileName) throws FileNotFoundException {
         if (pasta == null) {
-            pasta = (String) readXML(new File(path(fileName)));
+            pastaRaiz = path(fileName);
+            pasta = (String) readXML(new File(pastaRaiz));
         }
         File file = new File(pasta + "schema" + File.separator + session + ".xml");
         return readXML(file);

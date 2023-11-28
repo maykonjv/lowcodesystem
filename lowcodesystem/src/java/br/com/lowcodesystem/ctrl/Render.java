@@ -86,12 +86,16 @@ public class Render extends HttpServlet implements ServletContextListener {
         String warName = Custom.configName;
         System.out.println(warName);
         ProjectLoad.load(warName);
+
+        /////////////// DEBUG CONFIG ///////////
+        Log.levels.put(LogWrite.DEBUG, Boolean.TRUE);
+        Log.logLOCAL = true;
     }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         Log.info("Inicializando server....");
-        System.out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()) + "Inicializando server...");
+        System.out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ": Inicializando server...");
         String warName = Custom.configName;
         System.out.println(warName);
         ProjectLoad.load(warName);
@@ -154,12 +158,14 @@ public class Render extends HttpServlet implements ServletContextListener {
 
         request.setAttribute("projectName", project.getProjectName());
         request.setAttribute("projectNameCSS", project.getProjectNameCSS());
+        request.setAttribute("projectYear", project.getProjectYear());
+        request.setAttribute("projectVersion", project.getProjectVersion());
+
         /////// SOMENTE DURANTE DESENVOLVIMENTO
 //        if (request.getParameter(Render.ADMINISTRADOR) != null) {
 //            session.setAttribute("dev", Boolean.parseBoolean(request.getParameter(Render.ADMINISTRADOR)));
 //        session.setAttribute("dev", true);
 //        }
-
         if (ManterXML.pasta == null || ManterXML.pasta.equals("null") || ManterXML.pasta.isEmpty()) {
             RequestDispatcher rd = request.getRequestDispatcher("config.jsp");
             rd.forward(request, response);
@@ -945,38 +951,39 @@ public class Render extends HttpServlet implements ServletContextListener {
                 ResultSQL r = dao.select(ds, script);
                 String result = "<br>";
 
-                result += "<div class=\"form-row\">";
+                result += "<div class=\"form-row p-2\">";
                 result += "<div>";
                 result += "<div id=\"DataTables_Table_0_wrapper\" class=\"dataTables_wrapper\" role=\"grid\">";
-                result += "<table class=\"table table-striped table-bordered bootstrap-datatable datatable responsive dataTable\" width=\"100%\" id=\"_tb" + id + "\" aria-describedby=\"DataTables_Table_0_info\">";
+
+                result += "<table class=\"display order-column cell-border\"style=\"width:100%\" id=\"_tb" + id + "\">";
 
                 result += "<thead>";
-                result += "<tr role=\"row\">";
+                result += "<tr>";
                 if (tbCheck) {
-                    result += "<th><input id='ckeckbox_all' type='checkbox' onclick='checkTableAll(this);'\\></th>";
+                    result += "<th width='30px'><input id='ckeckbox_all' type='checkbox' class='form-check-input' onclick='checkTableAll(this);'/></th>";
                 }
                 boolean isID = r.column.size() > 1;
                 for (Column key : r.column) {
                     if (!isID) {
-                        result += "<th class=\"sorting_asc\" role=\"columnheader\" tabindex=\"0\" aria-controls=\"DataTables_Table_0\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" >" + key.name.toUpperCase() + "</th>";
+                        result += "<th>" + key.name.toUpperCase() + "</th>";
                     }
                     isID = false;
                 }
                 if (p != null && (p.isHasActive() || p.isHasView() || p.isHasUpdate() || p.isHasDelete())) {
-                    result += "<th role=\"columnheader\" tabindex=\"0\" aria-controls=\"DataTables_Table_0\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" style=\"width: 18%;\">AÇÃO</th>";
+                    result += "<th class='tb_col_action' style=\"width: 75px\">AÇÃO</th>";
                 }
                 result += "</tr>";
                 result += "</thead>";
                 if (!r.dados.isEmpty()) {
-                    result += "<tbody role=\"alert\" aria-live=\"polite\" aria-relevant=\"all\">";
+                    result += "<tbody>";
                     for (Map<String, Object> item : r.dados) {
-                        result += "<tr class=\"odd\">";
+                        result += "<tr>";
                         isID = true;
                         for (Column key : r.column) {
                             if (!isID) {
                                 result += "<td>" + item.get(key.name) + "</td>";
                             } else if (tbCheck) {
-                                result += "<td onclick=\"checkTable('#row_" + item.get(key.name) + "');\"><input type='checkbox' onclick=\"checkTable('#row_" + item.get(key.name) + "');\" class='row_chk' id=\"row_" + item.get(key.name) + "\" name=\"row_" + item.get(key.name) + "\" " + (param.get("row_" + item.get(key.name)) != null ? "checked" : "") + " /></td>";
+                                result += "<td onclick=\"checkTable('#row_" + item.get(key.name) + "');\"><input type='checkbox' onclick=\"checkTable('#row_" + item.get(key.name) + "');\" class='row_chk form-check-input' id=\"row_" + item.get(key.name) + "\" name=\"row_" + item.get(key.name) + "\" " + (param.get("row_" + item.get(key.name)) != null ? "checked" : "") + " /></td>";
                             }
                             isID = false;
                         }
@@ -985,30 +992,30 @@ public class Render extends HttpServlet implements ServletContextListener {
                                 if (!isID) {
                                     result += "<td>" + item.get(key.name) + "</td>";
                                 } else if (tbCheck) {
-                                    result += "<td onclick=\"checkTable('#row_" + item.get(key.name) + "');\"><input type='checkbox' onclick=\"checkTable('#row_" + item.get(key.name) + "');\" class='row_chk' id=\"row_" + item.get(key.name) + "\" name=\"row_" + item.get(key.name) + "\" " + (param.get("row_" + item.get(key.name)) != null ? "checked" : "") + " /></td>";
+                                    result += "<td onclick=\"checkTable('#row_" + item.get(key.name) + "');\"><input type='checkbox' onclick=\"checkTable('#row_" + item.get(key.name) + "');\" class='row_chk form-check-input' id=\"row_" + item.get(key.name) + "\" name=\"row_" + item.get(key.name) + "\" " + (param.get("row_" + item.get(key.name)) != null ? "checked" : "") + " /></td>";
                                 }
                             }
                         }
                         if (p != null && (p.isHasActive() || p.isHasView() || p.isHasUpdate() || p.isHasDelete())) {
-                            result += "<td class=\"center \">";
+                            result += "<td style=\"text-align: center\">";
                             if (p.isHasView() && (profile.getActions().get(p.getId()) != null && profile.getActions().get(p.getId()).isView() || perfil.equals(Render.ADMINISTRADOR))) {
-                                result += "<a id=\"tb_btn_view_" + item.get(r.column.get(0).name) + "\" class=\"btn btn-success tb_row_view\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_VIEW + "&id=" + item.get(r.column.get(0).name) + "\" data-toggle=\"tooltip\" title=\"Visualizar\" style=\"padding: 4px 8px; margin: 0 3px;\">";
-                                result += "    <i class=\"glyphicon glyphicon-zoom-in icon-white\"></i>";
+                                result += "<a id=\"tb_btn_view_" + item.get(r.column.get(0).name) + "\" class=\" tb_row_view text-decoration-none\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_VIEW + "&id=" + item.get(r.column.get(0).name) + "\" data-toggle=\"tooltip\" title=\"Visualizar\">";
+                                result += "    <i class=\"fa fa-search\"></i>";
                                 result += "</a>";
                             }
                             if (p.isHasUpdate() && (profile.getActions().get(p.getId()) != null && profile.getActions().get(p.getId()).isUpdate() || perfil.equals(Render.ADMINISTRADOR))) {
-                                result += "<a id=\"tb_btn_alter_" + item.get(r.column.get(0).name) + "\" class=\"btn btn-info tb_row_alter\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_ALTER + "&id=" + item.get(r.column.get(0).name) + "\" data-toggle=\"tooltip\" title=\"Editar\" style=\"padding: 4px 8px; margin: 0 3px;\">";
-                                result += "    <i class=\"glyphicon glyphicon-edit icon-white\"></i>";
+                                result += "<a id=\"tb_btn_alter_" + item.get(r.column.get(0).name) + "\" class=\" tb_row_alter text-decoration-none\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_ALTER + "&id=" + item.get(r.column.get(0).name) + "\" data-toggle=\"tooltip\" title=\"Editar\">";
+                                result += "    <i class=\"fa fa-pencil-square-o\" style='font-weight: bold'></i>";
                                 result += "</a>";
                             }
                             if (p.isHasDelete() && (profile.getActions().get(p.getId()) != null && profile.getActions().get(p.getId()).isDelete() || perfil.equals(Render.ADMINISTRADOR))) {
-                                result += "<a id=\"tb_btn_del_" + item.get(r.column.get(0).name) + "\" class=\"btn btn-danger tb_row_del\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_DELETE + "&id=" + item.get(r.column.get(0).name) + "\" onclick=\"if(!confirm('Deseja confirmar a exclusão?')) {return false;}\" data-toggle=\"tooltip\" title=\"Excluir\" style=\"padding: 4px 8px; margin: 0 3px;\">";
-                                result += "    <i class=\"glyphicon glyphicon-trash icon-white\"></i>";
+                                result += "<a id=\"tb_btn_del_" + item.get(r.column.get(0).name) + "\" class=\" tb_row_del text-decoration-none\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_DELETE + "&id=" + item.get(r.column.get(0).name) + "\" onclick=\"if(!confirm('Deseja confirmar a exclusão?')) {return false;}\" data-toggle=\"tooltip\" title=\"Excluir\">";
+                                result += "    <i class=\"fa fa-trash\"></i>";
                                 result += "</a>";
                             }
                             if (p.isHasActive() && (profile.getActions().get(p.getId()) != null && profile.getActions().get(p.getId()).isActive() || perfil.equals(Render.ADMINISTRADOR))) {
-                                result += "<a id=\"tb_btn_active_" + item.get(r.column.get(0).name) + "\" class=\"btn btn-primary tb_row_active\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_ACTIVATE + "&id=" + item.get(r.column.get(0).name) + "\" onclick=\"if(!confirm('Deseja confirmar a ativação/inativação?')) {return false;}\" data-toggle=\"tooltip\" title=\"Ativar/Inativar\" style=\"padding: 4px 8px; margin: 0 3px;\">";
-                                result += "    <i class=\"glyphicon glyphicon-eye-close icon-white\"></i>";
+                                result += "<a id=\"tb_btn_active_" + item.get(r.column.get(0).name) + "\" class=\" tb_row_active text-decoration-none\" href=\"render?page=" + p.getId() + "&action=" + Render.ACTION_ACTIVATE + "&id=" + item.get(r.column.get(0).name) + "\" onclick=\"if(!confirm('Deseja confirmar a ativação/inativação?')) {return false;}\" data-toggle=\"tooltip\" title=\"Ativar/Inativar\">";
+                                result += "    <i class=\"fa fa-ban\"></i>";
                                 result += "</a>";
                             }
                             result += "</td>";
@@ -1022,26 +1029,54 @@ public class Render extends HttpServlet implements ServletContextListener {
                 result += "</div>";
                 result += "</div>";
                 result += "<div class=\"clearfix\">"
-                        + "<script type=\"text/javascript\">"
-                        + "$(document).ready(function() {\n"
-                        + "    $('#_tb" + id + "').DataTable( {\n"
+                        + "<script>"
+                        + "    new DataTable('#_tb" + id + "', {\n"
+                        + "        responsive: true,\n"
+//                        + "        dom: 'Bfrtip',\n"
+//                        + "        buttons: [\n"
+//                        + "            {\n"
+//                        + "                extend: 'collection',\n"
+//                        + "                className: 'btn btn-success custom-html-collection ',\n"
+//                        + "                text: \"Exportar\",\n"
+//                        + "                buttons: [\n"
+//                        + "                    '<h3>Exportar</h3>',\n"
+//                        + "                    'copy',\n"
+//                        + "                    'pdf',\n"
+//                        + "                    'csv',\n"
+//                        + "                    'excel',\n"
+//                        + "                ]\n"
+//                        + "            },\n"
+//                        + "            {\n"
+//                        + "                extend: 'collection',\n"
+//                        + "                className: 'btn btn-success custom-html-collection ',\n"
+//                        + "                text: \"Filtrar\",\n"
+//                        + "                buttons: [\n"
+//                        + "                    '<h3 class=\"not-top-heading\">Filtro de colunas</h3>',\n"
+//                        + "                    'columnsToggle'\n"
+//                        + "                ]\n"
+//                        + "            }\n"
+//                        + "        ],"
                         + "        \"paging\":   " + tbPaging + ",\n"
                         + "        \"ordering\": " + tbOrdering + ",\n"
                         + "        \"info\":     " + tbInfo + ",\n"
                         + "        \"searching\":     " + tbSearching + ",\n"
                         + "        \"scrollX\": true,\n"
                         + "        \"sDom\": \"<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>\",\n"
-                        + "        \"sPaginationType\": \"bootstrap\",\n"
                         + "        \"oLanguage\": {\n"
-                        + "            \"sLengthMenu\": \"_MENU_ registros por pagina\",\n"
+                        + "            \"sLengthMenu\": \"_MENU_ registros por página\",\n"
                         + "            \"sZeroRecords\": \"Nenhum registro encontrado\",\n"
                         + "            \"sInfo\": \"De _START_ a _END_ do total de _TOTAL_ registros\",\n"
                         + "            \"sInfoEmpty\": \"De 0 a 0 do total de 0 registro\",\n"
                         + "            \"sInfoFiltered\": \"(filtrado de _MAX_ do total registros)\",\n"
-                        + "            \"sSearch\": \"Filtrar:\"\n"
-                        + "        }"
+                        + "            \"sSearch\": \"Filtrar:\",\n"
+                        + "             \"oPaginate\": {\n"
+                        + "                 \"sFirst\":      \"Inicio\",\n"
+                        + "                 \"sLast\":       \"Fim\",\n"
+                        + "                 \"sNext\":       \"Próximo\",\n"
+                        + "                 \"sPrevious\":   \"Anterior\"\n"
+                        + "             },"
+                        + "        },"
                         + "    } );\n"
-                        + "} );"
                         + "</script>"
                         + "</div>";
                 return result;

@@ -79,8 +79,8 @@ public class Auth extends HttpServlet {
         if (action.equals(ACTION_LOGIN)) {
             try {
                 if (!Render.project.isLoginExterno()) {
-                    String user = request.getParameter("user");
-                    String pass = request.getParameter("pass");
+                    String user = request.getParameter("username");
+                    String pass = request.getParameter("password");
                     ResultSQL result;
                     String script = Render.project.getSqlLogin();
                     String opcoesLogin = Render.project.getOpcoesLogin();
@@ -128,8 +128,8 @@ public class Auth extends HttpServlet {
                         request.getSession(true).setAttribute("perfil", Render.ADMINISTRADOR);
                     }
                 } else {
-                    String user = request.getParameter("user");
-                    String pass = request.getParameter("pass");
+                    String user = request.getParameter("username");
+                    String pass = request.getParameter("password");
                     String url = Render.project.getUrlLogin();
                     if (Val.isNullOrEmpy(url)) {
                         request.setAttribute("error", "Falha na configuraçao de autenticação.<br>Informe a url do serviço de autenticação.");
@@ -179,7 +179,7 @@ public class Auth extends HttpServlet {
                 }
                 if (resp.equalsIgnoreCase(pass.trim()) && username.equalsIgnoreCase("dev")) {
                     request.getSession(true).setAttribute("dev", true);
-                    rd = request.getRequestDispatcher("adminpath.jsp");
+                    rd = request.getRequestDispatcher("render");
                 } else {
                     if (!username.equalsIgnoreCase("dev")) {
                         request.setAttribute("error", "Usuário inválido");
@@ -188,12 +188,12 @@ public class Auth extends HttpServlet {
                     }
                     rd = request.getRequestDispatcher("config.jsp");
                 }
-                rd.forward(request, response);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 request.setAttribute("error", ex.getMessage());
             }
         }
+        rd.forward(request, response);
     }
 
     /**

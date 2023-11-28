@@ -36,7 +36,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Builder extends HttpServlet {
 
-    public static final String SESSION_TITLE = "title";
+    public static final String SESSION_JS_GLOBAL = "js-global";
+    public static final String SESSION_CSS_GLOBAL = "css-global";
 
     public static final String SESSION_MENU = "menu";
     public static final String SESSION_MENU_OPEN = "menu-open";
@@ -336,8 +337,8 @@ public class Builder extends HttpServlet {
                 if (session.equals(SESSION_FORM_SQL_PESQUISA)) {
                     for (Page pg : Render.pages) {
                         if (pg.getId().equals(page)) {
-                            pg.setSqlPesquisa(request.getParameter("sqlPesquisa"));
-                            pg.setSqlPesquisaDS(request.getParameter("sqlPesquisaDS"));
+                            pg.setSqlPesquisa(request.getParameter("sqlSearch"));
+                            pg.setSqlPesquisaDS(request.getParameter("sqlSearchDS"));
                             pg.setTbCheck(request.getParameter("hasCheck") != null);
                             pg.setTbPaging(request.getParameter("hasPaging") != null);
                             pg.setTbOrdering(request.getParameter("hasOrdering") != null);
@@ -392,6 +393,7 @@ public class Builder extends HttpServlet {
                         }
 
                     }
+                    return;
                 }
                 if (session.equals(SESSION_FIELD_REMOVE)) {
                     String idField = request.getParameter("idField").replace("#", "");
@@ -512,13 +514,12 @@ public class Builder extends HttpServlet {
                     field.setTbSearching(request.getParameter("hasSearching") != null);
                     ManterXML.writeXML(SESSION_FORM, Render.pages);
                 }
-                if (session.equals(SESSION_TITLE)) {
-                    Render.project.setProjectName(request.getParameter("projectName"));
-                    Render.project.setProjectNameCSS(request.getParameter("css"));
-                    Render.project.setVersion(request.getParameter("version"));
-                    Render.project.setCssGeral(request.getParameter("cssGeral"));
-                    Render.project.setJsGeral(request.getParameter("jsGeral"));
-                    Render.project.setUseImageLogo(request.getParameter("useImageLogo") != null);
+                if (session.equals(SESSION_JS_GLOBAL)) {
+                    Render.project.setJsGeral(request.getParameter("js_global"));
+                    ManterXML.writeXML(SESSION_PROJECT, Render.project);
+                }
+                if (session.equals(SESSION_CSS_GLOBAL)) {
+                    Render.project.setCssGeral(request.getParameter("css_global"));
                     ManterXML.writeXML(SESSION_PROJECT, Render.project);
                 }
                 if (session.equals(SESSION_LOGIN)) {
@@ -531,6 +532,9 @@ public class Builder extends HttpServlet {
                     // esta apagando o arquivo config.properties quando configura 
                     String pathSchema = request.getParameter("pathSchema");
                     String projectID = request.getParameter("projectID");
+                    String projectName = request.getParameter("projectName");
+                    String projectVersion = request.getParameter("projectVersion");
+                    String projectYear = request.getParameter("projectYear");
                     if (!pathSchema.endsWith("/") && !pathSchema.endsWith("\\")) {
                         pathSchema += File.separator;
                     }
@@ -538,6 +542,10 @@ public class Builder extends HttpServlet {
                     ProjectLoad.properties.clear();
                     ManterXML.writePathXML(pathSchema, warName);
                     ProjectLoad.load(warName);
+                    Render.project.setProjectName(projectName);
+                    Render.project.setProjectID(projectID);
+                    Render.project.setProjectVersion(projectVersion);
+                    Render.project.setProjectYear(projectYear);
                     Render.project.setPathUploadFiles(pathSchema + "upload");
                     Render.project.setLoginExterno(request.getParameter("loginExterno") != null);
                     Render.project.setUrlLogin(request.getParameter("urlLogin"));
@@ -567,7 +575,7 @@ public class Builder extends HttpServlet {
                         e.printStackTrace();
                     }
                     request.setAttribute("msg1", "Gravado com sucesso");
-                    RequestDispatcher rd = request.getRequestDispatcher("adminpath.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher("render");
                     rd.forward(request, response);
                     return;
                 }
@@ -579,14 +587,17 @@ public class Builder extends HttpServlet {
                         ManterXML.writeXML(SESSION_DATABASE, DataSource.database);
                     }
                     request.setAttribute("msg", "Gravado com sucesso");
-                    RequestDispatcher rd = request.getRequestDispatcher("admindb.jsp");
-                    rd.forward(request, response);
+                    response.setContentType("text/html;charset=UTF-8");
+                    String retorno = "{\"msg\": \"Gravado com sucesso\"}";
+                    response.getWriter().write(retorno);
+//                    RequestDispatcher rd = request.getRequestDispatcher("admindb.jsp");
+//                    rd.forward(request, response);
                     return;
                 }
                 if (session.equals(SESSION_ADMIN_B)) {
                     String ds = request.getParameter("datasource");
                     if (ds == null || ds.isEmpty() || ds.equals("null")) {
-                        response.sendRedirect("admindb.jsp");
+//                        response.sendRedirect("admindb.jsp");
                         return;
                     }
                     if (!DataSource.database.containsKey(ds)) {
@@ -635,31 +646,49 @@ public class Builder extends HttpServlet {
                         ds = request.getParameter("datasource");
                         System.out.println("excluindo ds: " + ds);
                         DataSource.database.remove(ds);
-                        DataSource.refresh();
                         ManterXML.writeXML(SESSION_DATABASE, DataSource.database);
+                        DataSource.refresh();
                     } else if (request.getParameter("btn_testar") != null) {
                         Object sql = request.getParameter("testSQL");
                         if (sql != null && !sql.toString().isEmpty()) {
                             try {
                                 ResultSQL r = dao.select(ds, sql.toString());
-                                request.setAttribute("resultSql", r.dados);
+                                response.getWriter().write(r.toString());
                             } catch (Exception e) {
-                                request.setAttribute("resultSql", e.getMessage());
+                                response.getWriter().write(e.getMessage());
                             }
                         }
+                        return;
                     }
-                    RequestDispatcher rd = request.getRequestDispatcher("admindb.jsp");
-                    rd.forward(request, response);
+                    Database db = DataSource.database.get(ds);
+                    JsonElement json = new Gson().toJsonTree(db);
+                    response.getWriter().write(json.toString());
                     return;
                 }
                 // script SQL executado em clientdb.jsp
                 if (session.equals(SESSION_SCRIPT)) {
                     String ds = request.getParameter("scriptDS");
                     String script = request.getParameter("script");
-                    String pgInfo = request.getParameter("btn_pg_info");
+                    String dbInfo = request.getParameter("btn_db_info");
                     ResultSQL r = null;
-                    if (pgInfo != null && !pgInfo.isEmpty()) {
-                        r = dao.select(ds, " SELECT table_name, column_name, data_type, character_maximum_length FROM information_schema.columns where table_schema='public'");
+                    if (dbInfo != null && !dbInfo.isEmpty()) {
+                        if (DataSource.database.get(ds).getDatabase().equals("Postgres")) {
+                            r = dao.select(ds, " SELECT table_name, column_name, data_type, character_maximum_length FROM information_schema.columns where table_schema='public'");
+                        }
+                        if (DataSource.database.get(ds).getDatabase().equals("Sqlite")) {
+                            r = dao.select(ds, "SELECT  "
+                                    + "  m.name as table_name,  "
+                                    + "p.* "
+                                    + "FROM  "
+                                    + "  sqlite_master AS m "
+                                    + "JOIN  "
+                                    + "  pragma_table_info(m.name) AS p "
+                                    + "WHERE "
+                                    + "  m.type = 'table'  "
+                                    + "ORDER BY  "
+                                    + "  m.name,  "
+                                    + "  p.cid");
+                        }
                     } else if (script != null && !script.trim().isEmpty() && !script.equals("null")) {
                         try {
                             if (script.trim().toUpperCase().startsWith("SELECT")) {
@@ -678,7 +707,7 @@ public class Builder extends HttpServlet {
                     if (r != null) {
                         String result = r.dados.size() + " linhas retornadas";
                         result += "<div id=\"DataTables_Table_0_wrapper\" class=\"dataTables_wrapper\" role=\"grid\">";
-                        result += "<table class=\"table table-striped table-bordered bootstrap-datatable datatable responsive dataTable\" style=\"\" id=\"DataTables_Table_0\" aria-describedby=\"DataTables_Table_0_info\">";
+                        result += "<table class=\"display\" style=\"\" id=\"DataTables_Table_0\">";
 
                         result += "<thead>";
                         result += "<tr role=\"row\">";
@@ -702,26 +731,54 @@ public class Builder extends HttpServlet {
                         result += "</table>";
                         result += "</div>";
                         result += "<div class=\"clearfix\">"
-                                + "<script type=\"text/javascript\">"
-                                + "$(document).ready(function() {\n"
-                                + "    $('#DataTables_Table_0').DataTable( {\n"
-                                + "        \"paging\":   true,\n"
-                                + "        \"ordering\": false,\n"
-                                + "        \"info\":     true,\n"
-                                + "        \"searching\":true,\n"
-                                + "        \"scrollX\":  true,\n"
+                                + "<script>"
+                                + "    new DataTable('#DataTables_Table_0', {\n"
+                                + "        responsive: true,\n"
+                                //                        + "        dom: 'Bfrtip',\n"
+                                //                        + "        buttons: [\n"
+                                //                        + "            {\n"
+                                //                        + "                extend: 'collection',\n"
+                                //                        + "                className: 'btn btn-success custom-html-collection ',\n"
+                                //                        + "                text: \"Exportar\",\n"
+                                //                        + "                buttons: [\n"
+                                //                        + "                    '<h3>Exportar</h3>',\n"
+                                //                        + "                    'copy',\n"
+                                //                        + "                    'pdf',\n"
+                                //                        + "                    'csv',\n"
+                                //                        + "                    'excel',\n"
+                                //                        + "                ]\n"
+                                //                        + "            },\n"
+                                //                        + "            {\n"
+                                //                        + "                extend: 'collection',\n"
+                                //                        + "                className: 'btn btn-success custom-html-collection ',\n"
+                                //                        + "                text: \"Filtrar\",\n"
+                                //                        + "                buttons: [\n"
+                                //                        + "                    '<h3 class=\"not-top-heading\">Filtro de colunas</h3>',\n"
+                                //                        + "                    'columnsToggle'\n"
+                                //                        + "                ]\n"
+                                //                        + "            }\n"
+                                //                        + "        ],"
+                                + "        \"paging\": true,\n"
+                                + "        \"ordering\": true,\n"
+                                + "        \"info\": true,\n"
+                                + "        \"searching\": true,\n"
+                                + "        \"scrollX\": true,\n"
                                 + "        \"sDom\": \"<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>\",\n"
-                                + "        \"sPaginationType\": \"bootstrap\",\n"
                                 + "        \"oLanguage\": {\n"
-                                + "            \"sLengthMenu\": \"_MENU_ registros por pagina\",\n"
+                                + "            \"sLengthMenu\": \"_MENU_ registros por página\",\n"
                                 + "            \"sZeroRecords\": \"Nenhum registro encontrado\",\n"
                                 + "            \"sInfo\": \"De _START_ a _END_ do total de _TOTAL_ registros\",\n"
                                 + "            \"sInfoEmpty\": \"De 0 a 0 do total de 0 registro\",\n"
                                 + "            \"sInfoFiltered\": \"(filtrado de _MAX_ do total registros)\",\n"
-                                + "            \"sSearch\": \"Filtrar:\"\n"
-                                + "        }"
+                                + "            \"sSearch\": \"Filtrar:\",\n"
+                                + "             \"oPaginate\": {\n"
+                                + "                 \"sFirst\":      \"Inicio\",\n"
+                                + "                 \"sLast\":       \"Fim\",\n"
+                                + "                 \"sNext\":       \"Próximo\",\n"
+                                + "                 \"sPrevious\":   \"Anterior\"\n"
+                                + "             },"
+                                + "        },"
                                 + "    } );\n"
-                                + "} );"
                                 + "</script>"
                                 + "</div>";
                         request.setAttribute("result", result);

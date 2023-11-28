@@ -1,0 +1,32 @@
+.lcs-settings{
+    display: flex;
+    justify-content: end;
+}
+.lcs-show-settings{
+}
+.lcs-settings a {
+    margin-left: 5px;
+    text-decoration: none;
+}
+.menu-config {
+    display: flex;
+    justify-content: end;
+    margin-top: -20px;
+    z-index: 1054;
+}
+.menu-config a{
+    color: white;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.btn-icon {
+    padding: 6px;
+    margin-right: 3px;
+}
+
+.dataTables_wrapper .dataTables_scroll{
+    border: solid 1px #c7c7c7;
+    border-radius: 3px;
+    margin-top: 5px;
+}

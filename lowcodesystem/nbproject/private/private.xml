@@ -3,10 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/mayko/Documents/NetBeansProjects/lowcodesystem/web/login.jsp</file>
-            <file>file:/C:/Users/mayko/Documents/NetBeansProjects/lowcodesystem/src/java/br/com/lowcodesystem/util/FormataTexto.java</file>
-            <file>file:/C:/Users/mayko/Documents/NetBeansProjects/lowcodesystem/src/java/br/com/lowcodesystem/ctrl/Builder.java</file>
-            <file>file:/C:/Users/mayko/Documents/NetBeansProjects/lowcodesystem/web/adminpath.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/libs/css/lowcodesystem.css</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/template.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/header_config_geral.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/src/java/br/com/lowcodesystem/ctrl/Builder.java</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/modal_backend_action.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/_menu.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/teste.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/src/java/br/com/lowcodesystem/ctrl/Render.java</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/modal_javascript_global.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/_log.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/_page.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/clientdb.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/modal_field.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/modal_datasource.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/components/modal_menu.jsp</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/src/java/br/com/lowcodesystem/util/ProjectLoad.java</file>
+            <file>file:/C:/Users/mayko/Documents/github/lowcodesystem-java/lowcodesystem/web/login.jsp</file>
         </group>
     </open-files>
 </project-private>

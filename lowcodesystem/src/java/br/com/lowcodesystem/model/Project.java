@@ -1,7 +1,9 @@
 package br.com.lowcodesystem.model;
 
+import br.com.lowcodesystem.util.FormataTexto;
 import java.io.File;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -10,8 +12,10 @@ import java.io.Serializable;
 public class Project implements Serializable {
 
     private String projectName;
+    private String projectID;
     private String projectNameCSS;
-    private String version;
+    private String projectVersion = "1.0.0";
+    private String projectYear = FormataTexto.toString(new Date().getYear() + 1900);
     private String sqlLogin;
     private String opcoesLogin;
     private boolean loginExterno = false;
@@ -25,7 +29,7 @@ public class Project implements Serializable {
     private String cssGeral = "";
     private String jsGeral = "";
     private String wsPort = "18080";
-    private String encode = "ISO-8859-1";
+    private String encode = "UTF-8";
 
     public String getProjectName() {
         return projectName;
@@ -81,12 +85,12 @@ public class Project implements Serializable {
         this.logEnable = logEnable;
     }
 
-    public String getVersion() {
-        return version;
+    public String getProjectVersion() {
+        return projectVersion;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setProjectVersion(String projectVersion) {
+        this.projectVersion = projectVersion;
     }
 
     public String getDatasource() {
@@ -173,6 +177,22 @@ public class Project implements Serializable {
 
     public void setEncode(String encode) {
         this.encode = encode;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    public String getProjectYear() {
+        return projectYear;
+    }
+
+    public void setProjectYear(String projectYear) {
+        this.projectYear = projectYear;
     }
 
 }

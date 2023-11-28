@@ -52,7 +52,7 @@
                                     <p class="text-medium-emphasis">Create your account</p>
                                     <div class="input-group mb-3"><span class="input-group-text">
                                             <svg class="icon">
-                                            <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                                            <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#fa fa-user"></use>
 
                                             </svg></span>
                                         <input class="form-control" type="text" placeholder="Username">

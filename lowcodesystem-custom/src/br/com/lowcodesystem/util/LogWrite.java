@@ -34,6 +34,7 @@ public class LogWrite {
     public static Map<String, Boolean> levels = new HashMap<String, Boolean>();
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmm");
     private static String teste = "";
+    public static boolean logLOCAL = false;
 
     public static void config(String path, String logName, long size, String logDate, String hoje, String teste) {
         LogWrite.path = path;
@@ -88,9 +89,15 @@ public class LogWrite {
                 PrintWriter pw = new PrintWriter(fw, true);
                 if (msg != null && !msg.isEmpty()) {
                     pw.write("\n" + level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | " + msg + "");
+                    if (logLOCAL) {
+                        System.out.println(level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | " + msg + "");
+                    }
                 }
                 if (ex != null) {
                     pw.write("\n" + level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | ");
+                    if (logLOCAL) {
+                        System.out.println(level + teste + " | " + new SimpleDateFormat("HH:mm:ss SSS").format(new Date()) + " | " + Thread.currentThread().getId() + " | ");
+                    }
                     ex.printStackTrace(pw);
                 }
                 pw.close();

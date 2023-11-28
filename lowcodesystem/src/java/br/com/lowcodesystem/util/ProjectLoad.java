@@ -60,7 +60,7 @@ public class ProjectLoad {
             if (menus == null || menus.isEmpty()) {
                 menus = new ArrayList<Menu>();
                 Menu menu = new Menu();
-                menu.setIcon("glyphicon glyphicon-home");
+                menu.setIcon("fa fa-tachometer");
                 menu.setId("menu_dashboard");
                 menu.setLabel("Dashboard");
                 menu.setPage("page_dashboard");
@@ -78,10 +78,10 @@ public class ProjectLoad {
             }
             if (project == null) {
                 project = new Project();
-                project.setProjectName("LowcodeSystem");
+                project.setProjectName("LowcodeSystem"); // TODO pegar o nome do projeto
             }
-            if (project.getVersion() == null || project.getVersion().isEmpty()) {
-                project.setVersion("1.0.0");
+            if (project.getProjectVersion() == null || project.getProjectVersion().isEmpty()) {
+                project.setProjectVersion("1.0.0");
             }
             if (project.getLogPath() == null || project.getLogPath().isEmpty()) {
                 if (pasta != null && !pasta.endsWith(File.separator)) {
@@ -114,6 +114,9 @@ public class ProjectLoad {
 
     public static void loadProperties(ServletContext servletContext) {
         try {
+            if (pasta == null) {
+                return;
+            }
             File file = new File(pasta + "schema" + File.separator + "config.properties");
             System.out.println("Load Properties: " + file.getAbsolutePath());
             if (!file.exists()) {
@@ -136,6 +139,7 @@ public class ProjectLoad {
                 String key = (String) enuKeys.nextElement();
                 String value = properties.getProperty(key);
                 if (!key.contains(".")) {
+                    Log.debug("ADD configs attributes: " + key + ": " + value);
                     servletContext.setAttribute(key, value);
                 }
             }

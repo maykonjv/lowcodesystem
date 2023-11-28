@@ -226,7 +226,7 @@ public class Page implements Serializable {
     }
 
     public String getSqlActivite() {
-        return sqlActivite;
+        return sqlActivite == null ? "" : sqlActivite;
     }
 
     public void setSqlActivite(String sqlActivite) {
@@ -234,7 +234,7 @@ public class Page implements Serializable {
     }
 
     public String getSqlDelete() {
-        return sqlDelete;
+        return sqlDelete == null ? "" : sqlDelete;
     }
 
     public void setSqlDelete(String sqlDelete) {
@@ -382,4 +382,10 @@ public class Page implements Serializable {
     public void setSqlAPIDS(String sqlAPIDS) {
         this.sqlAPIDS = sqlAPIDS;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" + "id=" + id + ", name=" + name + ", javascript=" + javascript + ", javascriptBack=" + javascriptBack + ", sqlPesquisa=" + sqlPesquisa + ", sqlExport=" + sqlExport + ", sqlAPI=" + sqlAPI + ", sqlEdit=" + sqlEdit + ", sqlSave=" + sqlSave + ", sqlUpdateView=" + sqlUpdateView + ", sqlActivite=" + sqlActivite + ", sqlDelete=" + sqlDelete + ", sqlPesquisaDS=" + sqlPesquisaDS + ", sqlExportDS=" + sqlExportDS + ", sqlAPIDS=" + sqlAPIDS + ", sqlEditDS=" + sqlEditDS + ", sqlSaveDS=" + sqlSaveDS + ", sqlUpdateViewDS=" + sqlUpdateViewDS + ", sqlActiviteDS=" + sqlActiviteDS + ", sqlDeleteDS=" + sqlDeleteDS + ", fields=" + fields + ", hasList=" + hasList + ", hasUpdate=" + hasUpdate + ", hasDelete=" + hasDelete + ", hasActive=" + hasActive + ", hasSearch=" + hasSearch + ", hasNew=" + hasNew + ", hasView=" + hasView + ", clearData=" + clearData + ", tbPaging=" + tbPaging + ", tbOrdering=" + tbOrdering + ", tbInfo=" + tbInfo + ", tbCheck=" + tbCheck + ", tbSearching=" + tbSearching + '}';
+    }
+
 }

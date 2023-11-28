@@ -4,13 +4,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="static br.com.lowcodesystem.util.ManterXML.pasta"%>
-
-<%
-    if ((session.getAttribute("dev") != null && (Boolean) session.getAttribute("dev"))) {
-        response.sendRedirect("adminpath.jsp");
-        return;
-    }
-%>
+ 
 <!DOCTYPE html><!--
 * CoreUI - Free Bootstrap Admin Template
 * @version v4.2.2
@@ -18,9 +12,8 @@
 * Copyright (c) 2023 creativeLabs Åukasz Holeczek
 * Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
 -->
-<html lang="en">
+<html>
     <head>
-        <base href="./">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>LowcodeSystem</title>
@@ -51,6 +44,7 @@
         <link href="libs/css/style.css" rel="stylesheet">
         <!-- We use those styles to show code examples, you should remove them in your application.-->
         <link href="libs/css/examples.css" rel="stylesheet">
+        <link href="libs/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -63,7 +57,7 @@
                                     <% Object error = request.getAttribute("error");
                                         if (error != null && !error.toString().isEmpty()) {
                                             out.println("<div class=\"alert alert-danger\">");
-                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>");
+                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">ï¿½</button>");
                                             out.println(error);
                                             out.println("</div>");
                                         }
@@ -80,17 +74,13 @@
                                     <form action="auth" method="post">
                                         <input type="hidden" name="action" value="login-admin"/>
                                         <h1>Login</h1>
-                                        <p class="text-medium-emphasis">Inicie sessão na sua conta</p>
+                                        <p class="text-medium-emphasis">Inicie sessÃ£o na sua conta</p>
                                         <div class="input-group mb-3"><span class="input-group-text">
-                                                <svg class="icon">
-                                                <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                                                </svg></span>
-                                            <input name="username" id="username" class="form-control" type="text" placeholder="Usuário">
+                                               <i class="fa fa-user"></i></span>
+                                            <input name="username" id="username" class="form-control" type="text" placeholder="Usuario">
                                         </div>
                                         <div class="input-group mb-4"><span class="input-group-text">
-                                                <svg class="icon">
-                                                <use xlink:href="libs/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
-                                                </svg></span>
+                                                <i class="fa fa-lock"></i></span>
                                             <input name="password" id="password" class="form-control" type="password" placeholder="Senha">
                                         </div>
                                         <div class="row">
@@ -98,20 +88,20 @@
                                                 <button class="btn btn-primary px-4" type="submit">Login</button>
                                             </div>
                                             <div class="col-6 text-end">
-                                                <button class="btn btn-link px-0" type="button">Esqueceu a senha?</button>
+                                                <a class="btn btn-link px-0" href="render">Cancelar</a>
                                             </div>
                                         </div>                                        
                                     </form>
                                 </div>
                             </div>
-
+ 
                             <div class="card col-md-5 text-white bg-primary py-5">
                                 <form method="get" action="register.jsp">
                                     <div class="card-body text-center">
                                         <div>
-                                            <h2>Login Padrão (DEV)</h2>
+                                            <h2>Login PadrÃ£o (DEV)</h2>
                                             <br>
-                                            <p><b>Usuário:</b><br>dev</p>
+                                            <p><b>UsuÃ¡rio:</b><br>dev</p>
                                             <p>
                                                 <b>Senha:</b><br><%=CriptoMD5.encryptMD5("LowcodeSystem - " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()))%>
                                             </p>
