@@ -30,3 +30,8 @@
     border-radius: 3px;
     margin-top: 5px;
 }
+
+html:not([dir=rtl]) .form-check {
+    padding-left: 0em;
+    padding-right: 1.5em;
+}

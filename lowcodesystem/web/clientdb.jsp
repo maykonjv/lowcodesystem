@@ -38,10 +38,15 @@
         <!-- Vendors styles-->
         <link rel="stylesheet" href="libs/vendors/simplebar/css/simplebar.css">
         <link rel="stylesheet" href="libs/css/vendors/simplebar.css">
+
         <!-- Main styles for this application-->
         <link href="libs/css/style.css" rel="stylesheet">
         <link href="libs/css/lowcodesystem.css" rel="stylesheet">
         <script src="libs/js/jquery.min.js"></script>
+        <link href="libs/vendors/datatable/datatables.min.css" rel="stylesheet" type="text/css"/>
+        <script src="libs/vendors/datatable/datatables.min.js" type="text/javascript"></script>
+        <link href="libs/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
     </head>
     <body>
         <div class="container py-3">

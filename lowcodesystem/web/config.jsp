@@ -4,14 +4,9 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="static br.com.lowcodesystem.util.ManterXML.pasta"%>
- 
-<!DOCTYPE html><!--
-* CoreUI - Free Bootstrap Admin Template
-* @version v4.2.2
-* @link https://coreui.io/product/free-bootstrap-admin-template/
-* Copyright (c) 2023 creativeLabs Łukasz Holeczek
-* Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
--->
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -56,8 +51,8 @@
                                 <div class="card-body">
                                     <% Object error = request.getAttribute("error");
                                         if (error != null && !error.toString().isEmpty()) {
-                                            out.println("<div class=\"alert alert-danger\">");
-                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"alert\">�</button>");
+                                            out.println("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">");
+                                            out.println("<button type=\"button\" class=\"btn-close\" data-coreui-dismiss=\"alert\" aria-label=\"Close\"></button>");
                                             out.println(error);
                                             out.println("</div>");
                                         }
@@ -95,21 +90,21 @@
                                 </div>
                             </div>
  
-                            <div class="card col-md-5 text-white bg-primary py-5">
+<!--                            <div class="card col-md-5 text-white bg-primary py-5">
                                 <form method="get" action="register.jsp">
                                     <div class="card-body text-center">
                                         <div>
-                                            <h2>Login Padrão (DEV)</h2>
+                                            <h2>Login PadrÃ£o (DEV)</h2>
                                             <br>
-                                            <p><b>Usuário:</b><br>dev</p>
+                                            <p><b>UsuÃ¡rio:</b><br>dev</p>
                                             <p>
                                                 <b>Senha:</b><br><%=CriptoMD5.encryptMD5("LowcodeSystem - " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()))%>
                                             </p>
-                                            <!--<button class="btn btn-lg btn-outline-light mt-3" type="submit">Increva-se agora!</button>-->
+                                            <button class="btn btn-lg btn-outline-light mt-3" type="submit">Increva-se agora!</button>
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>

@@ -339,11 +339,11 @@ public class Builder extends HttpServlet {
                         if (pg.getId().equals(page)) {
                             pg.setSqlPesquisa(request.getParameter("sqlSearch"));
                             pg.setSqlPesquisaDS(request.getParameter("sqlSearchDS"));
-                            pg.setTbCheck(request.getParameter("hasCheck") != null);
-                            pg.setTbPaging(request.getParameter("hasPaging") != null);
-                            pg.setTbOrdering(request.getParameter("hasOrdering") != null);
-                            pg.setTbInfo(request.getParameter("hasInfo") != null);
-                            pg.setTbSearching(request.getParameter("hasSearching") != null);
+                            pg.setTbCheck(request.getParameter("_hasCheck") != null);
+                            pg.setTbPaging(request.getParameter("_hasPaging") != null);
+                            pg.setTbOrdering(request.getParameter("_hasOrdering") != null);
+                            pg.setTbInfo(request.getParameter("_hasInfo") != null);
+                            pg.setTbSearching(request.getParameter("_hasSearching") != null);
                             ManterXML.writeXML(SESSION_FORM, Render.pages);
                             break;
                         }
@@ -706,8 +706,11 @@ public class Builder extends HttpServlet {
                     }
                     if (r != null) {
                         String result = r.dados.size() + " linhas retornadas";
+                        result += "<div class=\"form-row p-2\">";
+                        result += "<div>";
                         result += "<div id=\"DataTables_Table_0_wrapper\" class=\"dataTables_wrapper\" role=\"grid\">";
-                        result += "<table class=\"display\" style=\"\" id=\"DataTables_Table_0\">";
+
+                        result += "<table class=\"display order-column cell-border\"style=\"width:100%\" id=\"_tbDataTables_Table_0\">";
 
                         result += "<thead>";
                         result += "<tr role=\"row\">";
@@ -732,7 +735,7 @@ public class Builder extends HttpServlet {
                         result += "</div>";
                         result += "<div class=\"clearfix\">"
                                 + "<script>"
-                                + "    new DataTable('#DataTables_Table_0', {\n"
+                                + "    new DataTable('#_tbDataTables_Table_0', {\n"
                                 + "        responsive: true,\n"
                                 //                        + "        dom: 'Bfrtip',\n"
                                 //                        + "        buttons: [\n"

@@ -141,7 +141,7 @@ function renderModalField(valueSelected) {
             .append('<option value="numeric">Numérico</option>')
             .append('<option value="string" selected="true">String</option>')
             .append('<option value="date">Date</option>');
-    if (valueSelected === "select") {
+    if (valueSelected === "select" || valueSelected === "radio") {
         $('#formField div[id=div_id_field]').show();
         $('#formField div[id=div_label]').show();
         $('#formField div[id=div_defaultvalue]').show();
@@ -219,7 +219,7 @@ function renderModalField(valueSelected) {
         $('#formField div[id=div_table_options]').hide();
         $('#formField div[id=div_format]').hide();
         $('#formField div[id=div_mask]').hide();
-    } else if (valueSelected === "checkbox" || valueSelected === "radio") {
+    } else if (valueSelected === "checkbox") {
         $('#formField div[id=div_id_field]').show();
         $('#formField div[id=div_label]').show();
         $('#formField div[id=div_defaultvalue]').show();

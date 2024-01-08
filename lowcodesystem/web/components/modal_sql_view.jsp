@@ -1,3 +1,4 @@
+<%@page import="br.com.lowcodesystem.model.Field"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="br.com.lowcodesystem.dao.DataSource"%>
 <%@page import="br.com.lowcodesystem.model.Page"%>
@@ -20,21 +21,28 @@
                     <div class="row">
                         <div class="mb-3 col-md-3">
                             <label class="form-label">Opções</label>
-                            <select multiple class="form-control" style="height: 375px;" ondblclick="$('#sqlView').val($('#sqlView').val() + $(this).val())">
+                            <select multiple class="form-control" style="height: 375px;" ondblclick="$('#sqlUpdateView').val($('#sqlUpdateView').val() + $(this).val())">
                                 <option title="id">\#{id}</option>
+                                <%
+                                    for (Field f : ((Page) request.getAttribute("p")).getFields()) {
+                                        if (f.isHasSearch()) {
+                                            out.println("<option title=\"" + f.getId() + "\">" + f.getId() + "</option>");
+                                        }
+                                    }
+                                %>
                                 <%
                                     Enumeration keys = session.getAttributeNames();
                                     while (keys.hasMoreElements()) {
                                         String key = (String) keys.nextElement();
                                         if (!key.contains("javamelody")) {
-                                            out.println("<option title=\"" + key + "\"> #{session_" + key + "}</option>");
+                                            out.println("<option title=\"" + key + "\">session_" + key + "</option>");
                                         }
                                     }
                                     Enumeration keys2 = application.getAttributeNames();
                                     while (keys2.hasMoreElements()) {
                                         String key = (String) keys2.nextElement();
                                         if (!key.contains(".")) {
-                                            out.println("<option title=\"" + key + "\"> #{application_" + key + "}</option>");
+                                            out.println("<option title=\"" + key + "\">application_" + key + "</option>");
                                         }
                                     }
                                 %>
@@ -48,17 +56,17 @@
                                     <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                                 </svg>                            
                             </span>
-                            <textarea id="sqlView" name="sqlView" class="form-control"  placeholder="Informe o sql para buscar o registro" rows="15"><%= ((Page) request.getAttribute("p")).getSqlUpdateView()%></textarea>
+                            <textarea id="sqlUpdateView" name="sqlUpdateView" class="form-control"  placeholder="Informe o sql para buscar o registro" rows="15"><%= ((Page) request.getAttribute("p")).getSqlUpdateView()%></textarea>
                         </div>
-
+                        
                         <div class="mb-3 col-md-4">
-                            <label for="sqlViewDS" class="form-label">Datasource</label>
-                            <select id="sqlViewDS" name="sqlViewDS" class="form-select" size="1">	
+                            <label for="sqlUpdateViewDS" class="form-label">Datasource</label>
+                            <select id="sqlUpdateViewDS" name="sqlUpdateViewDS" class="form-select" size="1">	
                                 <% for (String key : DataSource.database.keySet()) {
                                         out.println("<option value=\"" + key + "\" " + (((Page) request.getAttribute("p")).getSqlUpdateViewDS().equals(key) ? "selected" : "") + ">" + key + "</option>");
                                     }%>
                             </select>
-                        </div>
+                        </div> 
                     </div>
                 </div>
                 <br>

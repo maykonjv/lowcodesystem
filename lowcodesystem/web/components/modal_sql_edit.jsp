@@ -1,3 +1,4 @@
+<%@page import="br.com.lowcodesystem.model.Field"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="br.com.lowcodesystem.dao.DataSource"%>
 <%@page import="br.com.lowcodesystem.model.Page"%>
@@ -22,6 +23,13 @@
                             <label class="form-label">Opções</label>
                             <select multiple class="form-control" style="height: 375px;" ondblclick="$('#sqlEdit').val($('#sqlEdit').val() + $(this).val())">
                                 <option title="id">\#{id}</option>
+                                <%
+                                    for (Field f : ((Page) request.getAttribute("p")).getFields()) {
+                                        if (f.isHasSearch()) {
+                                            out.println("<option title=\"" + f.getId() + "\"> #{" + f.getId() + "}</option>");
+                                        }
+                                    }
+                                %>
                                 <%
                                     Enumeration keys = session.getAttributeNames();
                                     while (keys.hasMoreElements()) {

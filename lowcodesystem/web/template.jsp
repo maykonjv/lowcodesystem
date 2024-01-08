@@ -44,7 +44,8 @@
         <link href="libs/vendors/datatable/datatables.min.css" rel="stylesheet" type="text/css"/>
         <script src="libs/vendors/datatable/datatables.min.js" type="text/javascript"></script>
         <link href="libs/vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="libs/css/cobalt.css" rel="stylesheet" type="text/css"/>
+
+        <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
         <style>
             <%=Render.project.getCssGeral()%>
         </style>        
@@ -149,11 +150,11 @@
                         <ol class="breadcrumb my-0 ms-2">
                             <% if (request.getAttribute("action") != null && !request.getAttribute("action").equals(Render.ACTION_BASE)) {%>
                             <li  class="breadcrumb-item">
-                                <a class="text-decoration-none" href="render?page=<%=((Page) request.getAttribute("p")).getId()%>" id="bread_menu"><span><%=((Page) request.getAttribute("p")).getName() %></span></a>
+                                <a class="text-decoration-none" href="render?page=<%=((Page) request.getAttribute("p")).getId()%>" id="bread_menu"><span><%=((Page) request.getAttribute("p")).getName()%></span></a>
                             </li>
                             <%} else {%>                            
                             <li  class="breadcrumb-item active">
-                                <span><%=((Page) request.getAttribute("p")).getName() %></span>
+                                <span><%=((Page) request.getAttribute("p")).getName()%></span>
                             </li>
                             <%}%>
                             <% if (request.getAttribute("action") != null && !request.getAttribute("action").equals(Render.ACTION_BASE)) {%>
@@ -191,6 +192,7 @@
         <!-- CoreUI and necessary plugins-->
         <script src="libs/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
         <script src="libs/vendors/simplebar/js/simplebar.min.js"></script>
+        <script src="libs/js/jquery.mask.min.js"></script>
 
         <script>
             <%=Render.project.getJsGeral()%>

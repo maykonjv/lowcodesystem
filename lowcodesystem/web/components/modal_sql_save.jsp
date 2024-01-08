@@ -1,3 +1,4 @@
+<%@page import="br.com.lowcodesystem.model.Field"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="br.com.lowcodesystem.dao.DataSource"%>
 <%@page import="br.com.lowcodesystem.model.Page"%>
@@ -21,7 +22,13 @@
                         <div class="mb-3 col-md-3">
                             <label class="form-label">Opções</label>
                             <select multiple class="form-control" style="height: 375px;" ondblclick="$('#sqlSave').val($('#sqlSave').val() + $(this).val())">
-                                <option title="id">\#{id}</option>
+                                <%
+                                    for (Field f : ((Page) request.getAttribute("p")).getFields()) {
+                                        if (f.isHasSearch()) {
+                                            out.println("<option title=\"" + f.getId() + "\"> #{" + f.getId() + "}</option>");
+                                        }
+                                    }
+                                %>
                                 <%
                                     Enumeration keys = session.getAttributeNames();
                                     while (keys.hasMoreElements()) {
@@ -58,6 +65,14 @@
                                         out.println("<option value=\"" + key + "\" " + (((Page) request.getAttribute("p")).getSqlSaveDS().equals(key) ? "selected" : "") + ">" + key + "</option>");
                                     }%>
                             </select>
+                        </div>
+                        <div class="form-row" id="div_cleardata">
+                            <div class="col-xs-4 form-group">
+                                <div class="checkbox" style="margin-top: 30px;">
+                                    <input id="clearData" name="clearData" type="checkbox" style="margin-left: 0px" <%= (((Page) request.getAttribute("p")).isClearData()) ? "checked" : ""%>/>
+                                    <label for="clearData" class="control-label">Limpar dados após a gravação</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -693,7 +693,7 @@ public class Render extends HttpServlet implements ServletContextListener {
                     request.setAttribute("action", action);
                     //preenche os combobox com dados do banco
                     for (Field f : p.getFields()) {
-                        if (f.getComponent().equals("select") && !f.getSqlOptions().isEmpty()) {
+                        if ((f.getComponent().equals("select") || f.getComponent().equals("radio")) && !f.getSqlOptions().isEmpty()) {
                             try {
                                 String script = f.getSqlOptions();
                                 script = FormataTexto.replaceScriptWithValidation(script, param);
@@ -860,6 +860,7 @@ public class Render extends HttpServlet implements ServletContextListener {
             jsEngine.put("out", System.out);
             for (String key : param.keySet()) {
                 jsEngine.put(key, param.get(key));
+                System.out.println(key + ": " + param.get(key));
             }
             jsEngine.eval(script);
             Invocable invocableEngine = (Invocable) jsEngine;

@@ -1,3 +1,4 @@
+<%@page import="br.com.lowcodesystem.model.Field"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="br.com.lowcodesystem.dao.DataSource"%>
 <%@page import="br.com.lowcodesystem.model.Page"%>
@@ -21,7 +22,13 @@
                         <div class="mb-3 col-md-3">
                             <label class="form-label">Opções</label>
                             <select multiple class="form-control" style="height: 375px;" ondblclick="$('#sqlSearch').val($('#sqlSearch').val() + $(this).val())">
-                                <option title="id">\#{id}</option>
+                                <%
+                                    for (Field f : ((Page) request.getAttribute("p")).getFields()) {
+                                        if (f.isHasSearch()) {
+                                            out.println("<option title=\"" + f.getId() + "\"> #{" + f.getId() + "}</option>");
+                                        }
+                                    }
+                                %>
                                 <%
                                     Enumeration keys = session.getAttributeNames();
                                     while (keys.hasMoreElements()) {
@@ -61,16 +68,16 @@
                         </div>                            
                         <div class="col-md-6">
                             <div class="checkbox" style="margin-top: 29px;">
-                                <input type="checkbox" class="form-check-input" id="hasCheck" name="hasCheck" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbCheck() ? "checked=\"checked\"" : ""%>/>
-                                <label for="hasCheck" class="form-label" style="margin-right: 10px">Checkbox</label>
-                                <input type="checkbox" class="form-check-input" id="hasPaging" name="hasPaging" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbPaging() ? "checked=\"checked\"" : ""%>/>
-                                <label for="hasPaging" class="form-label" style="margin-right: 10px">Paginação</label>
-                                <input type="checkbox" class="form-check-input" id="hasOrdering" name="hasOrdering" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbOrdering() ? "checked=\"checked\"" : ""%>/>
-                                <label for="hasOrdering" class="form-label" style="margin-right: 10px">Ordenação</label>
-                                <input type="checkbox" class="form-check-input" id="hasSearching" name="hasSearching" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbSearching() ? "checked=\"checked\"" : ""%>/>
-                                <label for="hasSearching" class="form-label" style="margin-right: 10px">Filtro</label>
-                                <input type="checkbox" class="form-check-input" id="hasInfo" name="hasInfo" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbInfo() ? "checked=\"checked\"" : ""%>/>
-                                <label for="hasInfo" class="form-label" style="margin-right: 10px">Info</label>
+                                <input type="checkbox" class="form-check-input" id="_hasCheck" name="_hasCheck" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbCheck() ? "checked=\"checked\"" : ""%>/>
+                                <label for="_hasCheck" class="form-label" style="margin-right: 10px">Checkbox</label>
+                                <input type="checkbox" class="form-check-input" id="_hasPaging" name="_hasPaging" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbPaging() ? "checked=\"checked\"" : ""%>/>
+                                <label for="_hasPaging" class="form-label" style="margin-right: 10px">Paginação</label>
+                                <input type="checkbox" class="form-check-input" id="_hasOrdering" name="_hasOrdering" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbOrdering() ? "checked=\"checked\"" : ""%>/>
+                                <label for="_hasOrdering" class="form-label" style="margin-right: 10px">Ordenação</label>
+                                <input type="checkbox" class="form-check-input" id="_hasSearching" name="_hasSearching" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbSearching() ? "checked=\"checked\"" : ""%>/>
+                                <label for="_hasSearching" class="form-label" style="margin-right: 10px">Filtro</label>
+                                <input type="checkbox" class="form-check-input" id="_hasInfo" name="_hasInfo" style="margin-left: 0px;" <%= ((Page) request.getAttribute("p")).isTbInfo() ? "checked=\"checked\"" : ""%>/>
+                                <label for="_hasInfo" class="form-label" style="margin-right: 10px">Info</label>
                             </div>
                         </div>
                     </div>
